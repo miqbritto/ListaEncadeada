@@ -1,3 +1,5 @@
+import java.util.NoSuchElementException;
+
 public class UniBHList<T> {
     // Hold the reference to the first node of this List.
     private Node<T> firstNode;
@@ -56,6 +58,88 @@ public class UniBHList<T> {
 
         return aux;
     }
+
+    public boolean isEmpty(){
+        if (firstNode == null){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int size(){
+        return totalElements;
+    }
+
+    public Node<T> search(T value) {
+        Node<T> aux = firstNode;
+        while (aux != null) {
+            if (aux.getValue().equals(value) && aux.getNext() != null) {
+                return aux;
+            }
+            aux = aux.getNext();
+            break;
+        }
+
+        throw new NoSuchElementException("Elemento " + value + " não encontrado");
+    }
+
+    public void removeByKey(T key) {
+        Node<T> aux = firstNode;
+        while (aux != null) {
+            if (aux.getValue().equals(key)) {
+                aux.setNext(aux.getNext().getNext());
+                totalElements--;
+            }
+            aux = aux.getNext();
+        }
+
+        throw new NoSuchElementException("Elemento " + key + " nao encontrado");
+    }
+
+    public void insertByIndex(T value, int index) {
+        Node<T> aux = firstNode;
+        try {
+            for (int i = 0; i < index; i++) {
+                aux = aux.getNext();
+            }
+            Node<T> newNode = new Node<>(value);
+            newNode.setNext(aux.getNext());
+            aux.setNext(newNode);
+            totalElements++;
+        } catch (NullPointerException e) {
+            System.out.println("ERRO! Indice não encontrado");
+            e.printStackTrace();
+        }
+    }
+
+    public void removeByIndex(int index){
+        Node<T> aux = firstNode;
+        Node<T> anterior = null;
+
+        for (int i = 0; i < index; i++) {
+            anterior = aux;
+            aux = aux.getNext();
+        }
+        anterior.setNext(aux.getNext());
+        totalElements--;
+    }
+
+    public void alterElement(T value, int index){
+        Node<T> aux = firstNode;
+        Node<T> anterior = null;
+        for (int i = 0; i < index ; i++) {
+            anterior = aux;
+            aux = aux.getNext();
+        }
+
+        Node<T> newNode = new Node<>(value);
+        newNode.setNext(aux.getNext());
+
+        anterior.setNext(newNode);
+    }
+
+
 
 
     @Override
